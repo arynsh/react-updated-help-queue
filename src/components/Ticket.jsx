@@ -1,46 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Moment from 'moment';
 
-function Ticket(props) {
-  return (
+function Ticket(props){
+  const ticketInformation =
     <div>
-      {/* For LOCALLY scoped just omit the global keyword. */}
-      <style global jsx>{`
-          div {
-            background-color: red;
-          }
-        `}</style>
       <h3>{props.location} - {props.names}</h3>
-      <p><em>{props.issue}</em></p>
-      <p> {props.vote}</p>
       <h4>{props.formattedWaitTime}</h4>
-      <hr />
-      <button onClick={displayVote()}>RateUp</button>
       <hr/>
-      {/* <button onClick={props.onVote}>RateDown</button> */}
-    </div>
-  );
+    </div>;
+  if (props.currentRouterPath === '/admin'){
+    return (
+      <div onClick={() => {props.onTicketSelection({names: props.names, location: props.location, issue: props.issue, formattedWaitTime: props.formattedWaitTime});}}>
+        {ticketInformation}
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        {ticketInformation}
+      </div>
+    );
+  }
 }
-function displayVote()
-{
-  props.vote+=1;
-}
-// function displayTimeOpen(timeOpen)
-// {
-//   return timeOpen.from(new Moment(),true);
-// }
 
 Ticket.propTypes = {
-  names: PropTypes.string,
-  location: PropTypes.string,
+  names: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
   issue: PropTypes.string,
   formattedWaitTime: PropTypes.string.isRequired,
-  vote:PropTypes.number
-  
+  currentRouterPath: PropTypes.string,
+  onTicketSelection: PropTypes.func
 };
-
-
-
 
 export default Ticket;
